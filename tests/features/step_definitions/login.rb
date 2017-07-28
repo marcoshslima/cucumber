@@ -12,11 +12,20 @@ When(/^I do Login$/) do
     idPage.do_login(@email, @pass)
 end
 
-Then(/^I should see the message "([^"]*)"$/) do |msg|
+Then(/^I should see the message$/) do |msg|
     nav.wait_for_welcome_message
     expect(nav.welcome_message.text).to have_content msg
 end
 
+#Then(/^I should see the message "([^"]*)"$/) do |msg|
+    #nav.wait_for_welcome_message
+ #   expect(nav.welcome_message.text).to have_content msg
+#end
+
+Then(/^I do log out$/) do
+    nav.welcome_message.click
+    nav.do_logout
+end
 
 #try to login
 Given(/^I have a list of invalid emails and passwords$/) do |table|
@@ -49,5 +58,5 @@ When(/^I try to Login$/) do
 end
 
 Then(/^a message should be displayed in login page$/) do
-  
+  expect(@messages.to_s).to eql @messages_specs.to_s
 end

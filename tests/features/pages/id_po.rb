@@ -8,11 +8,16 @@ class IdPage <SitePrism::Page
     element :ver_pagina, 'input[type=checkbox]'
     element :message_error, '.LoginBox-form-error--unique'
     element :message_error_mail, '.LoginBox-form-error--below'
-    element :login_error, '.LoginBox-form-input--withError'
-    
+
+    element :email_error, '.LoginBox-form-input--withError'
+    element :password_error, '.LoginBox-form-input-password--withError'
+
     def do_login(email, password)
-        self.email.set email
-        self.password.set password
+        self.email.set email if self.has_email?
+        self.email_error.set email if self.has_email_error?
+        self.email.send_keys(:tab)
+        self.password.set password if self.has_password?
+        self.password_error.set password if self.has_password_error?
         self.login_button.click
     end   
 
@@ -22,8 +27,10 @@ class IdPage <SitePrism::Page
     end    
     
     def cleanfields
-        self.login_error.set ''
-        self.password.set ''
+        self.email_error.set '' if self.has_email_error?
+        self.password.set '' if self.has_password?
+        self.password_error.set '' if self.has_password_error?
+        self.email.set '' if self.has_email?
     end   
 
 end    
